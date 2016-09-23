@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="utf-8">
+      <title></title>
+      <!-- Librairie Animate.css -->
+      <link rel="stylesheet" href="bower_components/animate.css/animate.min.css" charset="utf-8">
+      <!-- Materialize : CSS + JS avec Bower -->
+      <link rel="stylesheet" href="bower_components/Materialize/dist/css/materialize.min.css" charset="utf-8">
+   </head>
+   <!-- Pour Angular , tout le body est une application -->
+   <body ng-app="MyPanierApp">
+
+      <div class="container" ng-controller="MainCtrl">
+
+         <p>Nombre de produit avec une réduction : {{ nbreReduc }}</p>
+         <p>Prix moyen des produits : {{ prixMoyen }}</p>
+         <p>Prix total HT des produits : {{ prixTotalHt }}</p>
+         <p>Prix total TTC des produits : {{ prixTotalTtc }}</p>
+         <p>Nombre de produits avec des commentaires : {{ nbreCom }}. Soit une moyenne de : {{ nbreCom/panierBoissons.length*100 }}%</p>
+         <p>Moyenne de la quantité des produits qui ont entre 3 et 5 produits : {{ moyenneArticleTroisCinq }}</p>
+
+
+         <ul class="collection">
+            <li ng-repeat="com in affichArtMoyCom">
+               <a href="#!" class="collection-item">{{ com.item }}<span class="badge">Moyenne des notes : {{ com.sommeNote/com.nbreNote }}</span></a>
+            </li>
+         </ul>
+
+
+         <ul class="collection">
+               <li class="collection-item avatar" ng-repeat="boisson in panierTri">
+                  <img src="{{ boisson.photo }}" alt="" class="circle">
+                     <span class="title">{{ boisson.item }}</span>
+                     <p>{{ boisson.comment }}<br>
+                        Quantité : {{ boisson.quantite }}
+                     </p>
+                  <p class="secondary-content"><i class="material-icons">Prix : {{ boisson.price }} €</i></p>
+              </li>
+         </ul>
+
+         <table>
+           <thead>
+            <tr>
+               <th>Action </th>
+               <th data-field="name">Nom</th>
+               <th data-field="quantite">Quantité</th>
+               <th data-field="prix">Prix</th>
+            </tr>
+           </thead>
+           <tbody ng-repeat="boisson in panierBoissons">
+            <tr>
+               <td><button ng-click="removeBoisson(boisson)" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">delete</i></button></td>
+               <td>{{ boisson.item }}</td>
+               <td>{{ boisson.quantite }}</td>
+               <td>{{ boisson.price }}</td>
+            </tr>
+           </tbody>
+         </table>
+      </div>
+
+
+      <!-- Librairie Angular -->
+      <script src="bower_components/angular/angular.min.js" charset="utf-8"></script>
+      <!-- Librairie Moment -->
+      <script src="bower_components/moment/min/moment-with-locales.min.js" charset="utf-8"></script>
+      <!-- Librairie Underscore -->
+      <script src="bower_components/underscore/underscore-min.js" charset="utf-8"></script>
+      <!-- Librairie Jquery -->
+      <script src="bower_components/jquery/dist/jquery.min.js" charset="utf-8"></script>
+      <!-- Librairie Materialize -->
+      <script src="bower_components/Materialize/dist/js/materialize.min.js" charset="utf-8"></script>
+      <!-- Notre main.js -->
+      <script src="main.js" charset="utf-8"></script>
+   </body>
+</html>

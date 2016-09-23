@@ -1,0 +1,25 @@
+<section class="contact" ng-controller="userDetailCtrl">
+      <div class="col s12 m7">
+     <h2 class="header col s3">{{ currentUser.nom }} {{ currentUser.prenom }}</h2>
+     <div class="card horizontal">
+       <div class="card-image col s3">
+         <img class="imgDetail" src="{{ currentUser.photo }}">
+       </div>
+       <div class="card-stacked col s9">
+         <div class="card-content">
+            <p>Date de naissance : {{ currentUser.birthday }}</p>
+            <p>Age : {{ currentUser.age }} ans</p>
+            <p>Ville : {{ currentUser.ville }}</p>
+            <p>Code postal : {{ currentUser.codePostal }}</p>
+            <p>Biographie : {{ currentUser.biographie }}
+         </div>
+       </div>
+     </div>
+     <div class="input-field col s12">
+        <textarea id="textarea1" class="materialize-textarea" ng-model="com"></textarea>
+        <label for="textarea1">Ajouter un commentaire :</label>
+     </div>
+     <a ng-click="ajoutCom(currentUser.id, com)" class="btn-large waves-effect waves-light red ">Ajouter</a>
+   </div>
+
+</section>

@@ -1,0 +1,259 @@
+<div class="container" ng-controller="homeCtrl">
+
+   <nav class="navbar-fixed">
+      <button class="dropdown-button right btn-floating btn-large transparent" ng-click="removeCart()"><i class="material-icons">remove_shopping_cart</i></button>
+      <button class="dropdown-button left btn-floating btn-large transparent" data-activates="dropdown1"><i class="material-icons">shopping_cart</i></button>
+      <ul class="collection dropdown-content" id="dropdown1">
+         <li ng-repeat="user in users|filterLike">
+            <p><img ng-src="{{ user.photo }}" width="60" height="60" class="circle">
+               {{user.nom}} {{user.prenom}}
+               <button class="btn-floating btn-large  right" ng-click="removeArt(user.id)"><i class="material-icons right">delete</i></button>
+
+            </p>
+            <li>Nombre de favoris : {{ (users|filterLike).length }}</li>
+         </li>
+      </ul>
+      <div class="nav-wrapper right">
+         <form>
+            <div class="input-field">
+               <input id="search" type="search" required ng-model="inputSearch" placeholder="Rechercher un personnage">
+               <label for="search"><i class="material-icons">search</i></label>
+               <i class="material-icons">close</i>
+            </div>
+         </form>
+      </div>
+   </nav>
+
+
+
+
+   <p><span ng-if="(users|verifNaissance:date|filter:searchRadio|triNoteBac:triBac|triMajeurMineur:afficheMineurMajeur).length < 1">Plus aucun utilisateur</span><span ng-show="(users|verifNaissance:date|filter:searchRadio|triNoteBac:triBac|triMajeurMineur:afficheMineurMajeur).length > 0">Nombre d'utilisateurs : {{ (users|verifNaissance:date|filter:searchRadio|triNoteBac:triBac|triMajeurMineur:afficheMineurMajeur).length }} utilisateur<span ng-show="(users|verifNaissance:date|filter:searchRadio|triNoteBac:triBac|triMajeurMineur:afficheMineurMajeur).length > 1">s</span></span></p>
+   <!-- <p>Nombre d'utilisateurs : {{ nbreUsers }} <span ng-if="nbreUsers > 1">utilisateurs<span><span ng-if="nbreUsers < 2">utilisateur<span></p> -->
+   <p><span ng-show="users.length > 0">Moyenne d'age : {{ moyenneAge().toFixed(0) }} ans.<span ng-show="tousMineur">Il y a que des mineurs.</span></span></p>
+
+   <div class="row">
+      <div class="col s3">
+         <input name="ville" type="radio" id="Lyon" value="Lyon" ng-model="searchRadio"/>
+         <label for="Lyon">Lyon</label>
+      </div>
+      <div class="col s3">
+         <input name="ville" type="radio" id="Marseille" value="Marseille" ng-model="searchRadio" />
+         <label for="Marseille">Marseille</label>
+      </div>
+      <div class="col s3">
+         <input name="ville" type="radio" id="Paris" value="Paris" ng-model="searchRadio"/>
+         <label for="Paris">Paris</label>
+      </div>
+   </div>
+
+   <div class="row">
+      <div class="col s3">
+         <!-- ng-change="filterAge()"   ng-model="trancheAge['1018']" ds les input pour le filtre par age-->
+         <input type="checkbox" id="tranche1018" ng-model="tranche1018" />
+         <label for="tranche1018"> 10-18</label>
+      </div>
+      <div class="col s3">
+         <input type="checkbox" id="tranche1830" ng-model="tranche1830" />
+         <label for="tranche1830"> 18-30</label>
+      </div>
+      <div class="col s3">
+         <input type="checkbox" id="tranche3045" ng-model="tranche3045" />
+         <label for="tranche3045"> 30-45</label>
+      </div>
+      <div class="col s3">
+         <input type="checkbox" id="tranche45" ng-model="tranche45" />
+         <label for="tranche45"> 45 et plus</label>
+      </div>
+   </div>
+
+   <div class="row">
+      <div class="col s4">
+         <input type="date" class="datepicker" ng-model="date">
+      </div>
+
+   </div>
+
+   <div class="row">
+      <form action="#">
+         <p class="range-field">
+            <input type="range" id="triBac" min="0" max="20" ng-model="triBac"/>
+            <label for="triBac">Note du bac</label>
+         </p>
+      </form>
+   </div>
+
+   <div class="row">
+      <div class="switch">
+         <label>
+            Majeurs
+            <input type="checkbox" ng-model="afficheMineurMajeur" ng-click="triMajeurMineur">
+            <span class="lever"></span>
+            Mineurs
+         </label>
+      </div>
+   </div>
+
+   <div class="row">
+      <div class="input-field col s3">
+         <input id="codePostalSearch" type="text" class="validate" maxlength="5" ng-model="codePostalSearch">
+         <label for="codePostalSearch">Code postal</label>
+      </div>
+   </div>
+   <div class="row">
+      <div class="input-field col s4">
+         <select ng-model="triMix">
+            <option value="" disabled selected>Trier par :</option>
+            <option value="nom">Nom</option>
+            <option value="prenom">Prénom</option>
+            <option value="age">Age</option>
+            <option value="noteBac">Note au bac</option>
+            <option value="ville">Ville</option>
+         </select>
+      </div>
+
+      <div class="input-field col s4">
+         <select ng-model="triNbreUsers">
+            <option value="" disabled selected>Afficher :</option>
+            <option type="number" value="2">2 utilisateurs</option>
+            <option type="number" value="5">5 utilisateurs</option>
+            <option type="number" value="8">8 utilisateurs</option>
+            <option type="number" value="10">10 utilisateurs au bac</option>
+         </select>
+      </div>
+   </div>
+
+   <ul class="collection">
+      <li ng-repeat=" user in users | filterLike" class="collection-item">
+         <img ng-src="{{ user.photo }}" width="60" height="60" alt="" class="circle">
+         <p>{{user.nom}} {{user.prenom}}</p></li>
+      </ul>
+
+      <div class="row">
+         <div class="col s12" ng-show="(users|verifNaissance:date|filter:searchRadio|triNoteBac:triBac|triMajeurMineur:afficheMineurMajeur).length < 1"><h3>Aucun utilisateur trouvé :(</h3></div>
+         <!-- on filtre en fonction de la checkox avec le ng-model searchRadio, le filtre s'applique avec la value recupérer -->
+         <div class="card sticky-action col s4 m4 fade" ng-repeat="user in users | verifNaissance:date | filter:searchRadio | triNoteBac:triBac | triMajeurMineur:afficheMineurMajeur | searchNomPrenom:inputSearch | codePostalTri:codePostalSearch | orderBy : triMix | limitTo:triNbreUsers track by $index ">
+            <!-- <p ng-show="(users|codePostalTri:codePostalSearch)">{{ user.codePostal }}</p> -->
+            <p ng-show="codePostalSearch == user.codePostal">{{ departement(user.codePostal) }}</p>
+            <div class="card-image waves-effect waves-block waves-light">
+               <i ng-show="birthMonth(user.birthday)" class="medium material-icons swing animated infinite giftBoD" id="anniversary">card_giftcard</i>
+               <a ng-click="like(user.id)" class="btn-floating btn-large waves-effect waves-light red like">
+                  <i ng-if="likeIcon(user.id)" class="material-icons">favorite</i>
+                  <i ng-if="!likeIcon(user.id)" class="material-icons">favorite_border</i>
+               </a>
+               <a ng-click="plusUn(user.id)" class="btn-floating btn-large waves-effect waves-light red plus"><i class="material-icons">plus_one</i></a>
+               <a href="#/userDetail/?id={{ user.id }}" class="btn-floating btn-large waves-effect waves-light red loupe"><i class="material-icons">zoom_in</i></a>
+               <img class="activator" ng-src="{{ user.photo }}" width="250px" height="250px">
+            </div>
+            <div class="card-content" ng-class="{ 'blue lighten-3ng': {{ user.sexe }}, 'pink lighten-3': {{ !user.sexe }} }">
+               <p class="sizeP"><span class="card-title grey-text text-darken-4">{{ user.nom }} {{ user.prenom }}</span></p>
+               <span class="card-title activator grey-text text-darken-4"><i class="small material-icons right">more_vert</i></span>
+               <p>Like : {{ affichePlusUn(user.id) }}</p>
+               <p>Moyenne des notes : {{ noteMoyenne(user.id) }}</p>
+               <p>Nombre de commentaire : {{ nbreCom(user.id) }}</p>
+               <p ng-class="{ 'warning': {{ user.noteBac < 10 }} }">{{ user.noteBac }}/20<img ng-src="{{ user.langue|afficheDrapeau }}" alt="" class="pays circle right"></p>
+               <div class="row">
+                  <div class="col s12">
+                     <input-stars on-star-click="ajoutNote(user.id, notePerso)" max="5" icon-empty="fa-heart-o" icon-full="fa-heart" ng-model="notePerso"></input-stars>
+                  </div>
+               </div>
+               <!-- Modal Trigger -->
+               <a class="waves-effect waves-light btn modal-trigger" href="#" ng-click="modalTrigger(user.prenom)">Commentaires</a>
+
+               <!-- Modal Structure -->
+               <div id="{{ user.prenom }}" class="modal {{ user.prenom }}">
+                  <div class="modal-content" ng-repeat="com in user.commentaire">
+                     <h4>{{ com.date }}</h4>
+                     <p>{{ com.com }}</p>
+                  </div>
+               </div>
+
+
+
+            </div>
+
+            <div class="card-action">
+               <a ng-click="removeUser(user)" class="waves-effect waves-light btn"><i class="material-icons">not_interested</i>Supprimer</a>
+            </div>
+
+            <div class="card-reveal">
+               <span class="card-title grey-text text-darken-4">Biographie<i class="material-icons right">close</i></span>
+               <p>{{ user.biographie }}</p>
+            </div>
+
+         </div>
+      </div>
+      <!-- <paging page="currentPage" page-size="triNbreUsers" total="users|verifNaissance:date|filter:searchRadio|triNoteBac:triBac|triMajeurMineur:afficheMineurMajeur).length">
+   </paging> -->
+   <!-- http://brantwills.github.io/Angular-Paging/ -->
+   <div id="modal1" class="modal">
+      <div class="modal-content">
+         <h4>Modal Header</h4>
+         <p>A bunch of text</p>
+      </div>
+      <div class="modal-footer">
+         <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+      </div>
+   </div>
+
+   <div class="row">
+      <div class="input-field col s2">
+         <input name="homme" type="radio" id="homme" value=true ng-model="sexeRadio"/>
+         <label for="homme">Homme</label>
+      </div>
+      <div class="input-field col s2">
+         <input name="femme" type="radio" id="femme" value=false ng-model="sexeRadio" />
+         <label for="femme">Femme</label>
+      </div>
+      <div class="input-field col s4">
+         <input id="nom" type="text" class="validate" ng-model="newNom">
+         <label for="nom">Nom</label>
+      </div>
+      <div class="input-field col s4">
+         <input id="prenom" type="text" class="validate" ng-model="newPrenom">
+         <label for="prenom">Prenom</label>
+      </div>
+   </div>
+
+   <div class="row">
+      <div class="input-field col s3">
+         <input type="date" class="datepicker" ng-model="newDoB">
+      </div>
+      <div class="input-field col s3">
+         <input id="newVille" type="text" class="validate" ng-model="newVille">
+         <label for="newVille">Ville</label>
+      </div>
+      <div class="input-field col s3">
+         <input id="newCodePostal" type="text" class="validate" maxlength="5" ng-model="newCodePostal">
+         <label for="newCodePostal">Code postal</label>
+      </div>
+      <div class="input-field col s3">
+         <input id="newNoteBac" type="text" class="validate" ng-model="newNoteBac">
+         <label for="newNoteBac">Note du bac</label>
+      </div>
+   </div>
+
+   <div class="row">
+      <div class="input-field col s4">
+         <select class="icons" ng-model="newLangue">
+            <option value="" disabled selected>Langue</option>
+            <option value="fr" data-icon="images/sample-1.jpg" class="left circle">Français</option>
+            <option value="en" data-icon="images/office.jpg" class="left circle">Anglais</option>
+            <option value="it" data-icon="images/yuna.jpg" class="left circle">Italien</option>
+            <option value="es" data-icon="images/yuna.jpg" class="left circle">Espagnol</option>
+         </select>
+      </div>
+      <div class="input-field col s8">
+         <input id="newPhoto" type="text" class="validate" ng-model="newPhoto">
+         <label for="newPhoto">Url de la photo</label>
+      </div>
+   </div>
+
+   <div class="row">
+      <div class="input-field col s12">
+         <textarea id="newBio" class="materialize-textarea" ng-model="newBio"></textarea>
+         <label for="newBio">Biographie</label>
+      </div>
+   </div>
+   <button ng-click="creationUser()" class="waves-effect waves-light btn"><i class="material-icons">perm_identity</i>Créer ce personnage</button>
+
+</div>
